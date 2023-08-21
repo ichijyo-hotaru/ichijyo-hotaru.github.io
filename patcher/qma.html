@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Quiz Magic Academy (9+) DLL Modder</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- don't hate -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script type="text/javascript" src="js/FileSaver.min.js"></script>
+    <script type="text/javascript" src="js/dllpatcher.js"></script>
+    <script type="text/javascript">
+        window.addEventListener("load", function () {
+            new PatchContainer([
+                new Patcher('client.dll', "QMA9 ~ QMA18", [
+                    {
+                        type: "dynamic",
+                        target: "string",
+                        mode: "all",
+                        name: "Fix quiz path",
+                        tooltip: "Fix Quiz Directory E drive into current directory",
+                        patches: [{off: 'E:/LMA', on: './quiz'}]
+                    },
+                    {
+                        type: "dynamic",
+                        name: "Freeze timer",
+                        tooltip: "",
+                        patches: [{off: [0x01, 'XX', 0x08, 0x8A, 0x45, 0xFF], on: [0x90, 0x90, 0x90, 0x8A, 0x45, 0xFF]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA9 ~ QMA12", [
+                    {
+                        type: "dynamic",
+                        name: "Skip center monitor check",
+                        tooltip: "",
+                        patches: [{off: [0x10, 0x2B, 0xC7, 0x74, 0x05, 0x83], on: [0x10, 0x2B, 0xC7, 0xEB, 0x05, 0x83]}]
+                    },
+                    {
+                        type: "dynamic",
+                        name: "Bypass center monitor check error",
+                        tooltip: "",
+                        patches: [{off: [0x02, 0x00, 0x00, 0x00, 0xC7, 0x05, 'XX', 'XX', 'XX', 'XX', 0x0A, 0x00, 0x00, 0x00], on: [0x01, 0x00, 0x00, 0x00, 0xC7, 0x05, 'XX', 'XX', 'XX', 'XX', 0x0A, 0x00, 0x00, 0x00]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA9 (2013040100)", [
+                    {
+                        type: "dynamic",
+                        name: "Skip matching",
+                        tooltip: "",
+                        patches: [{off: [0xE9, 0x5F, 'XX', 0xFF, 0xFF, 0x80, 0xBB, 0xDC, 0x02, 0x00], on: [0xE9, 0x5F, 'XX', 0xFF, 0xFF, 0xE9, 0x7D, 0x03, 0x00, 0x00]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA9 (2013111300)", [
+                    {
+                        type: "dynamic",
+                        name: "Skip matching",
+                        tooltip: "",
+                        patches: [{off: [0xE9, 0x5F, 'XX', 0xFF, 0xFF, 0x80, 0xBB, 0xFC, 0x02, 0x00], on: [0xE9, 0x5F, 'XX', 0xFF, 0xFF, 0xE9, 0x7D, 0x03, 0x00, 0x00]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA10", [
+                    {
+                        type: "dynamic",
+                        name: "Skip matching",
+                        tooltip: "",
+                        patches: [{off: [0xE9, 0x64, 0xFD, 0xFF, 0xFF, 0x80, 0xBB, 0x34, 0x03, 0x00], on: [0xE9, 0x64, 0xFD, 0xFF, 0xFF, 0xE9, 0x7E, 0x03, 0x00, 0x00]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA11 ~ QMA13", [
+                    {
+                        type: "dynamic",
+                        name: "Skip matching",
+                        tooltip: "",
+                        patches: [{off: [0xE9, 0x5E, 0xFD, 0xFF, 0xFF, 0x80, 0xBB, 0x3C, 0x03, 0x00], on: [0xE9, 0x5E, 0xFD, 0xFF, 0xFF, 0xE9, 0x3A, 0x03, 0x00, 0x00]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA14 ~ QMA18", [
+                    {
+                        type: "dynamic",
+                        name: "Skip matching",
+                        tooltip: "",
+                        patches: [{off: [0xE9, 0x41, 0xFD, 0xFF, 0xFF, 0x80, 0xBB, 0x44, 0x03, 0x00], on: [0xE9, 0x41, 0xFD, 0xFF, 0xFF, 0xE9, 0x31, 0x03, 0x00, 0x00]}]
+                    },
+                ]),
+                new Patcher('client.dll', "QMA17 ~ QMA18", [
+                    {
+                        type: "dynamic",
+                        target: "string",
+                        mode: "all",
+                        name: "Fix quiz path",
+                        tooltip: "Fix Quiz Directory E drive into current directory",
+                        patches: [{off: 'E:/LMA', on: './quiz'}]
+                    },
+                    {
+                        type: "dynamic",
+                        name: "Freeze timer",
+                        tooltip: "",
+                        patches: [{off: [0x01, 'XX', 0x08, 0x8A, 0x45, 0xFF], on: [0x90, 0x90, 0x90, 0x8A, 0x45, 0xFF]}]
+                    },
+                    {
+                        type: "dynamic",
+                        name: "force KONASUTE mode",
+                        tooltip: "",
+                        patches: [{off: [0x83, 0xc0, 0xBF, 0x83, 0xF8, 0x0E, 0x77, 0x23, 0x0F, 0xB6, 0x88], on: [0x83, 0xc0, 0xBF, 0x83, 0xF8, 0x0E, 0xeb, 0x0E, 0x0F, 0xB6, 0x88]}]
+                    },
+                ])
+            ]);
+        });
+    </script>
+</head>
+<body>
+    <h1>Quiz Magic Academy DLL Modder</h1>
+</body>
+</html>
